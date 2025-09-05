@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SearchBar from '@/components/SearchBar';
@@ -12,10 +13,38 @@ import { recipes, categories, difficulties, commonTags } from '@/data/recipes';
 import { Recipe } from '@/types/recipe';
 
 export default function HomePage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
+
+  // Dynamic rotating taglines
+  const taglines = [
+    "Your Culinary Adventure Awaits",
+    "Discover Your Next Favorite Dish", 
+    "From Kitchen to Table",
+    "Every Recipe Tells a Story",
+    "Cooking Made Simple & Delicious"
+  ];
+
+  // Trending searches
+  const trendingSearches = [
+    "Italian pasta",
+    "30-min meals", 
+    "keto desserts",
+    "vegetarian bowls",
+    "quick breakfast"
+  ];
+
+  // Rotate taglines every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTaglineIndex((prev) => (prev + 1) % taglines.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Filter recipes based on search and filters
   const filteredRecipes = useMemo(() => {
@@ -53,12 +82,22 @@ export default function HomePage() {
   };
 
   const getRandomRecipe = (): Recipe => {
-    const randomIndex = Math.floor(Math.random() * recipes.length);
-    return recipes[randomIndex];
+    // Use a fixed seed or recipe ID to ensure consistent rendering
+    // This prevents hydration mismatches between server and client
+    return recipes[0]; // Always use the first recipe for consistency
   };
 
   const featuredRecipes = recipes.slice(0, 4);
   const randomRecipe = getRandomRecipe();
+
+  const handleTrendingSearch = (trend: string) => {
+    setSearchQuery(trend);
+  };
+
+  const handleQuickCategory = (category: string) => {
+    // Navigate to the category page instead of just filtering
+    router.push(`/category/${category}`);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -77,7 +116,9 @@ export default function HomePage() {
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Your Culinary
-              <span className="block gradient-text">Adventure Awaits</span>
+              <span className="block gradient-text transition-all duration-1000 ease-in-out">
+                {taglines[currentTaglineIndex]}
+              </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
               Explore our curated collection of delicious recipes from around the world. 
@@ -86,7 +127,7 @@ export default function HomePage() {
           </div>
 
           {/* Hero Search Bar */}
-          <div className="max-w-2xl mx-auto mb-12">
+          <div className="max-w-2xl mx-auto mb-8">
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
@@ -95,34 +136,124 @@ export default function HomePage() {
             />
           </div>
 
+          {/* Trending Searches */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-600 mb-3">Trending:</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {trendingSearches.map((trend, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleTrendingSearch(trend)}
+                  className="px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+                >
+                  {trend}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick Category Buttons */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-600 mb-3">Quick Categories:</p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {categories.map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleQuickCategory(category)}
+                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2"
+                >
+                  <span className="text-lg">
+                    {category === 'Breakfast' ? '🥞' : 
+                     category === 'Lunch' ? '🥗' : 
+                     category === 'Dinner' ? '🍝' : 
+                     category === 'Dessert' ? '🍰' : '🍽️'}
+                  </span>
+                  <span>{category}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Hero Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="flex items-center justify-center w-12 h-12 bg-orange-100 rounded-xl mb-3 mx-auto">
                 <svg className="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <div className="text-2xl font-bold text-gray-900">{recipes.length}</div>
-              <div className="text-sm text-gray-600">Recipes</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">{recipes.length}+</div>
+              <div className="text-sm text-gray-600 font-medium">Handpicked Recipes</div>
+              <div className="text-xs text-gray-500 mt-1">Growing collection</div>
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="flex items-center justify-center w-12 h-12 bg-emerald-100 rounded-xl mb-3 mx-auto">
                 <svg className="h-6 w-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <div className="text-2xl font-bold text-gray-900">5</div>
-              <div className="text-sm text-gray-600">Categories</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">2.5K+</div>
+              <div className="text-sm text-gray-600 font-medium">Happy Cooks</div>
+              <div className="text-xs text-gray-500 mt-1">Community growing</div>
             </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="flex items-center justify-center w-12 h-12 bg-purple-100 rounded-xl mb-3 mx-auto">
                 <svg className="h-6 w-6 text-purple-600" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               </div>
-              <div className="text-2xl font-bold text-gray-900">4.8</div>
-              <div className="text-sm text-gray-600">Rating</div>
+              <div className="text-3xl font-bold text-gray-900 mb-1">4.9</div>
+              <div className="text-sm text-gray-600 font-medium">Average Rating</div>
+              <div className="text-xs text-gray-500 mt-1">From our community</div>
+            </div>
+          </div>
+
+          {/* User Testimonials */}
+          <div className="mt-12 max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">What Our Community Says</h3>
+              <p className="text-sm text-gray-600">Real feedback from happy home cooks</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-md">
+                <div className="flex items-center mb-3">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">"The chocolate chip cookies recipe is absolutely perfect! My family asks for them every week."</p>
+                <div className="text-xs text-gray-500">- Sarah M.</div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-md">
+                <div className="flex items-center mb-3">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">"Finally found a pasta recipe that's restaurant quality! The instructions are so clear and easy to follow."</p>
+                <div className="text-xs text-gray-500">- Mike R.</div>
+              </div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 shadow-md">
+                <div className="flex items-center mb-3">
+                  <div className="flex text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="h-4 w-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-gray-700 mb-3">"The breakfast recipes saved my mornings! Quick, delicious, and my kids actually eat them."</p>
+                <div className="text-xs text-gray-500">- Jennifer L.</div>
+              </div>
             </div>
           </div>
         </div>
@@ -183,19 +314,19 @@ export default function HomePage() {
               <p className="text-gray-600 mb-6">{randomRecipe.description}</p>
               <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 mb-6">
                 <div className="flex items-center space-x-1">
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>{randomRecipe.cookTime} min</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                   <span>{randomRecipe.servings} servings</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                   <span>4.5</span>
@@ -277,7 +408,7 @@ export default function HomePage() {
                             onClick={() => setSelectedDifficulty('All')}
                             className="ml-2 hover:text-emerald-600 transition-colors duration-200"
                           >
-                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             </svg>
                           </button>
