@@ -26,7 +26,9 @@ export const recipes: Recipe[] = [
       'Pour or scoop the batter onto the griddle, using approximately 1/4 cup for each pancake.',
       'Cook until bubbles form on the surface, then flip and cook until browned on the other side.'
     ],
-    tags: ['vegetarian', 'quick', 'family-friendly']
+    tags: ['vegetarian', 'quick', 'family-friendly'],
+    isPopular: true,
+    isChefChoice: true
   },
   {
     id: '2',
@@ -85,7 +87,8 @@ export const recipes: Recipe[] = [
       'Drop by rounded tablespoons onto ungreased baking sheets.',
       'Bake for 9 to 11 minutes or until golden brown.'
     ],
-    tags: ['vegetarian', 'family-friendly', 'classic']
+    tags: ['vegetarian', 'family-friendly', 'classic'],
+    isPopular: true
   },
   {
     id: '4',
@@ -280,7 +283,9 @@ export const recipes: Recipe[] = [
       'Drizzle with honey and top with chopped nuts.',
       'Garnish with fresh mint and serve immediately.'
     ],
-    tags: ['vegetarian', 'gluten-free', 'healthy', 'quick']
+    tags: ['vegetarian', 'gluten-free', 'healthy', 'quick'],
+    isNew: true,
+    isChefChoice: true
   },
   {
     id: '11',

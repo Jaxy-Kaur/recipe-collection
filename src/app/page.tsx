@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SearchBar from '@/components/SearchBar';
@@ -16,6 +16,18 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [randomRecipe, setRandomRecipe] = useState<Recipe | null>(null);
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+
+  // Main rotation options for the hero section
+  const mainRotationOptions = [
+    "Adventure Awaits",
+    "Discover Your Next Favorite Dish",
+    "From Kitchen to Table with Love",
+    "Where Great Meals Begin",
+    "Turn Every Meal into a Masterpiece",
+    "Your Personal Recipe Treasure Trove"
+  ];
 
   // Filter recipes based on search and filters
   const filteredRecipes = useMemo(() => {
@@ -52,13 +64,27 @@ export default function HomePage() {
     setSelectedTags([]);
   };
 
-  const getRandomRecipe = (): Recipe => {
-    const randomIndex = Math.floor(Math.random() * recipes.length);
-    return recipes[randomIndex];
-  };
+  // Set random recipe on client side only
+  useEffect(() => {
+    const getRandomRecipe = (): Recipe => {
+      const randomIndex = Math.floor(Math.random() * recipes.length);
+      return recipes[randomIndex];
+    };
+    setRandomRecipe(getRandomRecipe());
+  }, []);
+
+  // Rotate main options every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuoteIndex((prevIndex) => 
+        (prevIndex + 1) % mainRotationOptions.length
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [mainRotationOptions.length]);
 
   const featuredRecipes = recipes.slice(0, 4);
-  const randomRecipe = getRandomRecipe();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -77,12 +103,31 @@ export default function HomePage() {
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Your Culinary
-              <span className="block gradient-text">Adventure Awaits</span>
+              <span 
+                key={currentQuoteIndex}
+                className="block gradient-text animate-fade-in"
+              >
+                {mainRotationOptions[currentQuoteIndex]}
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6 leading-relaxed">
               Explore our curated collection of delicious recipes from around the world. 
               From quick breakfasts to elaborate dinners, find your next favorite dish.
             </p>
+            
+            {/* Main Options Progress Indicators */}
+            <div className="flex justify-center space-x-2 mb-8">
+              {mainRotationOptions.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === currentQuoteIndex 
+                      ? 'bg-orange-500 scale-125' 
+                      : 'bg-orange-200'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
 
           {/* Hero Search Bar */}
@@ -179,34 +224,43 @@ export default function HomePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">{randomRecipe.title}</h3>
-              <p className="text-gray-600 mb-6">{randomRecipe.description}</p>
-              <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 mb-6">
-                <div className="flex items-center space-x-1">
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  <span>{randomRecipe.cookTime} min</span>
+              {randomRecipe ? (
+                <>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{randomRecipe.title}</h3>
+                  <p className="text-gray-600 mb-6">{randomRecipe.description}</p>
+                  <div className="flex items-center justify-center space-x-6 text-sm text-gray-500 mb-6">
+                    <div className="flex items-center space-x-1">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span>{randomRecipe.cookTime} min</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      <span>{randomRecipe.servings} servings</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                      </svg>
+                      <span>4.5</span>
+                    </div>
+                  </div>
+                  <button className="btn-primary">
+                    Cook This Recipe
+                    <svg className="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
+                </>
+              ) : (
+                <div className="space-y-4">
+                  <div className="loading-spinner w-8 h-8 mx-auto"></div>
+                  <p className="text-gray-600">Loading random recipe...</p>
                 </div>
-                <div className="flex items-center space-x-1">
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  <span>{randomRecipe.servings} servings</span>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                  <span>4.5</span>
-                </div>
-              </div>
-              <button className="btn-primary">
-                Cook This Recipe
-                <svg className="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
+              )}
             </div>
           </div>
         </div>

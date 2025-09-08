@@ -10,6 +10,9 @@ export interface Recipe {
   ingredients: string[];
   instructions: string[];
   tags: string[];
+  isNew?: boolean;
+  isPopular?: boolean;
+  isChefChoice?: boolean;
 }
 
 export type RecipeCategory = Recipe['category'];

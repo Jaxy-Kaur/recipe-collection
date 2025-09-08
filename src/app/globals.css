@@ -100,6 +100,18 @@
   .bounce-in {
     animation: bounceIn 0.8s ease-out;
   }
+  
+  .firework-explosion {
+    animation: fireworkExplosion 1.5s ease-out forwards;
+  }
+  
+  .sparkle-explosion {
+    animation: sparkleExplosion 1.5s ease-out forwards;
+  }
+  
+  .heart-beat {
+    animation: heartBeat 0.6s ease-in-out;
+  }
 }
 
 @keyframes fadeIn {
@@ -133,6 +145,55 @@
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes fireworkExplosion {
+  0% {
+    opacity: 1;
+    transform: scale(0) translate(0, 0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) translate(var(--explosion-x), var(--explosion-y));
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) translate(var(--explosion-x), var(--explosion-y));
+  }
+}
+
+@keyframes sparkleExplosion {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg) translate(0, 0);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg) translate(var(--sparkle-x), var(--sparkle-y));
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.8) rotate(360deg) translate(var(--sparkle-x), var(--sparkle-y));
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(540deg) translate(var(--sparkle-x), var(--sparkle-y));
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  75% {
+    transform: scale(1.1);
   }
 }
 
