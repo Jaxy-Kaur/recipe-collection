@@ -33,19 +33,28 @@ export default function Header() {
               Home
             </Link>
             <Link 
-              href="/#categories" 
+              href="/categories" 
               className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-300 hover:scale-105 transform"
             >
               Categories
             </Link>
             <Link 
-              href="/#about" 
+              href="/favorites" 
+              className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-300 hover:scale-105 transform flex items-center space-x-1"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              <span>Favorites</span>
+            </Link>
+            <Link 
+              href="/about" 
               className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-300 hover:scale-105 transform"
             >
               About
             </Link>
             <Link 
-              href="/#contact" 
+              href="/contact" 
               className="text-gray-700 hover:text-orange-600 font-medium transition-colors duration-300 hover:scale-105 transform"
             >
               Contact
@@ -82,21 +91,31 @@ export default function Header() {
                 Home
               </Link>
               <Link
-                href="/#categories"
+                href="/categories"
                 className="block px-3 py-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 font-medium transition-all duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Categories
               </Link>
               <Link
-                href="/#about"
+                href="/favorites"
+                className="block px-3 py-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 font-medium transition-all duration-200 flex items-center space-x-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <span>Favorites</span>
+              </Link>
+              <Link
+                href="/about"
                 className="block px-3 py-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 font-medium transition-all duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >
                 About
               </Link>
               <Link
-                href="/#contact"
+                href="/contact"
                 className="block px-3 py-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 font-medium transition-all duration-200"
                 onClick={() => setIsMenuOpen(false)}
               >

@@ -34,7 +34,7 @@ export const recipes: Recipe[] = [
     id: '2',
     title: 'Chicken Stir Fry',
     description: 'A quick and healthy stir fry loaded with vegetables and tender chicken.',
-    image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&h=300&fit=crop',
+    image: 'https://www.allrecipes.com/thmb/xvlRRhK5ldXuGcXad8XDM5tTAfE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/223382_chicken-stir-fry_Rita-1x1-1-b6b835ccfc714bb6a8391a7c47a06a84.jpg',
     cookTime: 25,
     servings: 4,
     difficulty: 'Medium',
@@ -179,7 +179,7 @@ export const recipes: Recipe[] = [
     id: '7',
     title: 'Banana Smoothie',
     description: 'Creamy and nutritious banana smoothie perfect for a quick snack or breakfast.',
-    image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=500&h=300&fit=crop',
+    image: 'https://souvy.nl/cdn/shop/articles/Bananen-smoothie.jpg?v=1713966190&width=2048',
     cookTime: 5,
     servings: 2,
     difficulty: 'Easy',
@@ -320,7 +320,7 @@ export const recipes: Recipe[] = [
     id: '12',
     title: 'Chicken Caesar Wrap',
     description: 'Fresh and flavorful chicken Caesar wrap perfect for lunch on the go.',
-    image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&h=300&fit=crop',
+    image: 'https://www.cherryonmysundae.com/wp-content/uploads/2025/02/chicken-caesar-wrap-feature.jpg',
     cookTime: 25,
     servings: 4,
     difficulty: 'Easy',
@@ -343,9 +343,460 @@ export const recipes: Recipe[] = [
       'Cut diagonally and serve immediately.'
     ],
     tags: ['high-protein', 'quick', 'lunch', 'portable']
+  },
+  {
+    id: '13',
+    title: 'French Toast',
+    description: 'Classic French toast with cinnamon and vanilla, perfect for a special breakfast.',
+    image: 'https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=500&h=300&fit=crop',
+    cookTime: 15,
+    servings: 4,
+    difficulty: 'Easy',
+    category: 'Breakfast',
+    ingredients: [
+      '8 slices thick bread',
+      '4 large eggs',
+      '1 cup milk',
+      '2 tablespoons sugar',
+      '1 teaspoon vanilla extract',
+      '1/2 teaspoon cinnamon',
+      '2 tablespoons butter'
+    ],
+    instructions: [
+      'Whisk together eggs, milk, sugar, vanilla, and cinnamon.',
+      'Heat butter in a large skillet over medium heat.',
+      'Dip bread slices in egg mixture, coating both sides.',
+      'Cook in skillet until golden brown, about 3-4 minutes per side.',
+      'Serve immediately with maple syrup and fresh berries.'
+    ],
+    tags: ['vegetarian', 'family-friendly', 'classic', 'sweet']
+  },
+  {
+    id: '14',
+    title: 'Spaghetti Carbonara',
+    description: 'Creamy Italian pasta with eggs, cheese, and pancetta.',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Espaguetis_carbonara.jpg',
+    cookTime: 30,
+    servings: 4,
+    difficulty: 'Medium',
+    category: 'Dinner',
+    ingredients: [
+      '1 lb spaghetti',
+      '6 oz pancetta, diced',
+      '4 large eggs',
+      '1 cup grated parmesan cheese',
+      '4 cloves garlic, minced',
+      'Black pepper to taste',
+      '2 tablespoons olive oil'
+    ],
+    instructions: [
+      'Cook spaghetti according to package directions.',
+      'Cook pancetta in olive oil until crispy.',
+      'Whisk eggs with parmesan and black pepper.',
+      'Drain pasta, reserving 1 cup pasta water.',
+      'Toss hot pasta with pancetta and egg mixture.',
+      'Add pasta water gradually until creamy.'
+    ],
+    tags: ['high-protein', 'italian', 'comfort-food', 'creamy']
+  },
+  {
+    id: '15',
+    title: 'Chocolate Mousse',
+    description: 'Rich and airy chocolate mousse dessert that melts in your mouth.',
+    image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500&h=300&fit=crop',
+    cookTime: 45,
+    servings: 6,
+    difficulty: 'Hard',
+    category: 'Dessert',
+    ingredients: [
+      '8 oz dark chocolate',
+      '4 large eggs, separated',
+      '1/4 cup sugar',
+      '1 cup heavy cream',
+      '1 teaspoon vanilla extract',
+      'Pinch of salt'
+    ],
+    instructions: [
+      'Melt chocolate in a double boiler, let cool slightly.',
+      'Beat egg yolks with half the sugar until pale.',
+      'Whip cream to soft peaks.',
+      'Beat egg whites with remaining sugar to stiff peaks.',
+      'Fold chocolate into egg yolks, then fold in cream.',
+      'Gently fold in egg whites and chill for 2 hours.'
+    ],
+    tags: ['vegetarian', 'gluten-free', 'rich', 'elegant']
+  },
+  {
+    id: '16',
+    title: 'Hummus',
+    description: 'Creamy homemade hummus perfect for dipping or spreading.',
+    image: 'https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_16:9/k%2FPhoto%2FRecipes%2F2024-08-hummus%2Fhummus-165',
+    cookTime: 15,
+    servings: 8,
+    difficulty: 'Easy',
+    category: 'Snack',
+    ingredients: [
+      '1 can chickpeas, drained',
+      '1/4 cup tahini',
+      '3 tablespoons lemon juice',
+      '2 cloves garlic',
+      '2 tablespoons olive oil',
+      '1/2 teaspoon cumin',
+      'Salt to taste'
+    ],
+    instructions: [
+      'Combine all ingredients in a food processor.',
+      'Process until smooth and creamy.',
+      'Add water gradually if too thick.',
+      'Taste and adjust seasoning.',
+      'Serve with pita bread or vegetables.',
+      'Drizzle with olive oil and paprika.'
+    ],
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'healthy', 'mediterranean']
+  },
+  {
+    id: '17',
+    title: 'Caesar Salad',
+    description: 'Classic Caesar salad with homemade croutons and dressing.',
+    image: 'https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500&h=300&fit=crop',
+    cookTime: 20,
+    servings: 4,
+    difficulty: 'Easy',
+    category: 'Lunch',
+    ingredients: [
+      '2 heads romaine lettuce',
+      '1/2 cup parmesan cheese',
+      '1/2 cup croutons',
+      '2 anchovy fillets',
+      '2 cloves garlic',
+      '1/4 cup olive oil',
+      '2 tablespoons lemon juice',
+      '1 egg yolk'
+    ],
+    instructions: [
+      'Wash and chop romaine lettuce.',
+      'Make dressing with anchovies, garlic, and egg yolk.',
+      'Whisk in olive oil and lemon juice.',
+      'Toss lettuce with dressing.',
+      'Top with parmesan cheese and croutons.',
+      'Serve immediately.'
+    ],
+    tags: ['vegetarian', 'classic', 'fresh', 'crunchy']
+  },
+  {
+    id: '18',
+    title: 'Beef Stew',
+    description: 'Hearty beef stew with vegetables, perfect for cold weather.',
+    image: 'https://images.unsplash.com/photo-1604909052743-94e838986d24?w=500&h=300&fit=crop',
+    cookTime: 120,
+    servings: 6,
+    difficulty: 'Medium',
+    category: 'Dinner',
+    ingredients: [
+      '2 lbs beef chuck, cubed',
+      '4 carrots, sliced',
+      '3 potatoes, cubed',
+      '1 onion, diced',
+      '4 cups beef broth',
+      '2 tablespoons flour',
+      '2 tablespoons tomato paste',
+      '1 bay leaf'
+    ],
+    instructions: [
+      'Brown beef cubes in a large pot.',
+      'Add onions and cook until soft.',
+      'Stir in flour and tomato paste.',
+      'Add broth, carrots, potatoes, and bay leaf.',
+      'Simmer for 1.5 hours until meat is tender.',
+      'Season with salt and pepper.'
+    ],
+    tags: ['high-protein', 'comfort-food', 'hearty', 'winter']
+  },
+  {
+    id: '19',
+    title: 'Oatmeal',
+    description: 'Warm and comforting oatmeal with your favorite toppings.',
+    image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=500&h=300&fit=crop',
+    cookTime: 10,
+    servings: 2,
+    difficulty: 'Easy',
+    category: 'Breakfast',
+    ingredients: [
+      '1 cup rolled oats',
+      '2 cups milk or water',
+      '2 tablespoons honey',
+      '1/2 teaspoon cinnamon',
+      '1/4 cup chopped nuts',
+      '1/4 cup fresh berries',
+      '1 tablespoon chia seeds'
+    ],
+    instructions: [
+      'Bring milk to a boil in a saucepan.',
+      'Add oats and reduce heat to simmer.',
+      'Cook for 5 minutes, stirring occasionally.',
+      'Stir in honey and cinnamon.',
+      'Top with nuts, berries, and chia seeds.',
+      'Serve warm.'
+    ],
+    tags: ['vegetarian', 'vegan', 'healthy', 'fiber-rich', 'quick']
+  },
+  {
+    id: '20',
+    title: 'Fish Tacos',
+    description: 'Fresh fish tacos with cabbage slaw and creamy sauce.',
+    image: 'https://www.ourhappymess.com/wp-content/uploads/2024/06/Fish-Tacos-with-Mango-Salsa-square-featured.jpg',
+    cookTime: 25,
+    servings: 4,
+    difficulty: 'Medium',
+    category: 'Dinner',
+    ingredients: [
+      '1 lb white fish fillets',
+      '8 corn tortillas',
+      '2 cups cabbage, shredded',
+      '1/2 cup sour cream',
+      '2 limes, juiced',
+      '1 teaspoon cumin',
+      '1/2 cup cilantro',
+      '1 avocado, sliced'
+    ],
+    instructions: [
+      'Season fish with cumin, salt, and pepper.',
+      'Cook fish in a pan until flaky.',
+      'Make slaw with cabbage, lime juice, and cilantro.',
+      'Mix sour cream with lime juice for sauce.',
+      'Warm tortillas and fill with fish.',
+      'Top with slaw, sauce, and avocado.'
+    ],
+    tags: ['high-protein', 'gluten-free', 'fresh', 'mexican', 'healthy']
+  },
+  {
+    id: '21',
+    title: 'Apple Pie',
+    description: 'Classic American apple pie with flaky crust and cinnamon apples.',
+    image: 'https://www.southernliving.com/thmb/bbDY1d_ySIrCFcq8WNBkR-3x6pU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/2589601_Mailb_Mailbox_Apple_Pie_003-da802ff7a8984b2fa9aa0535997ab246.jpg',
+    cookTime: 90,
+    servings: 8,
+    difficulty: 'Hard',
+    category: 'Dessert',
+    ingredients: [
+      '6 apples, peeled and sliced',
+      '2 pie crusts',
+      '3/4 cup sugar',
+      '2 tablespoons flour',
+      '1 teaspoon cinnamon',
+      '1/4 teaspoon nutmeg',
+      '2 tablespoons butter'
+    ],
+    instructions: [
+      'Preheat oven to 425°F.',
+      'Mix apples with sugar, flour, and spices.',
+      'Line pie pan with one crust.',
+      'Fill with apple mixture and dot with butter.',
+      'Cover with second crust and seal edges.',
+      'Bake for 45-50 minutes until golden.'
+    ],
+    tags: ['vegetarian', 'classic', 'american', 'sweet', 'comfort-food']
+  },
+  {
+    id: '22',
+    title: 'Caprese Salad',
+    description: 'Simple Italian salad with tomatoes, mozzarella, and basil.',
+    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=500&h=300&fit=crop',
+    cookTime: 10,
+    servings: 4,
+    difficulty: 'Easy',
+    category: 'Lunch',
+    ingredients: [
+      '4 large tomatoes',
+      '8 oz fresh mozzarella',
+      '1/4 cup fresh basil',
+      '3 tablespoons olive oil',
+      '2 tablespoons balsamic vinegar',
+      'Salt and pepper to taste'
+    ],
+    instructions: [
+      'Slice tomatoes and mozzarella into rounds.',
+      'Arrange on a platter alternating tomato and mozzarella.',
+      'Tear basil leaves and scatter over salad.',
+      'Drizzle with olive oil and balsamic vinegar.',
+      'Season with salt and pepper.',
+      'Serve immediately.'
+    ],
+    tags: ['vegetarian', 'gluten-free', 'italian', 'fresh', 'simple']
+  },
+  {
+    id: '23',
+    title: 'Chicken Noodle Soup',
+    description: 'Comforting chicken noodle soup perfect for when you\'re feeling under the weather.',
+    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&h=300&fit=crop',
+    cookTime: 60,
+    servings: 6,
+    difficulty: 'Easy',
+    category: 'Lunch',
+    ingredients: [
+      '1 whole chicken',
+      '8 cups chicken broth',
+      '2 cups egg noodles',
+      '3 carrots, sliced',
+      '3 celery stalks, sliced',
+      '1 onion, diced',
+      '2 cloves garlic',
+      '1 bay leaf'
+    ],
+    instructions: [
+      'Simmer chicken in broth until cooked through.',
+      'Remove chicken and shred the meat.',
+      'Add vegetables and noodles to broth.',
+      'Cook until noodles are tender.',
+      'Return shredded chicken to pot.',
+      'Season with salt and pepper.'
+    ],
+    tags: ['high-protein', 'comfort-food', 'healing', 'warm', 'classic']
+  },
+  {
+    id: '24',
+    title: 'Pancakes',
+    description: 'Fluffy buttermilk pancakes with maple syrup and butter.',
+    image: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&h=300&fit=crop',
+    cookTime: 20,
+    servings: 4,
+    difficulty: 'Easy',
+    category: 'Breakfast',
+    ingredients: [
+      '2 cups flour',
+      '2 tablespoons sugar',
+      '2 teaspoons baking powder',
+      '1/2 teaspoon salt',
+      '2 cups buttermilk',
+      '2 eggs',
+      '1/4 cup melted butter'
+    ],
+    instructions: [
+      'Mix dry ingredients in a large bowl.',
+      'Whisk wet ingredients in another bowl.',
+      'Combine wet and dry ingredients.',
+      'Heat griddle and pour batter.',
+      'Cook until bubbles form, then flip.',
+      'Serve with maple syrup and butter.'
+    ],
+    tags: ['vegetarian', 'family-friendly', 'classic', 'sweet', 'fluffy']
+  },
+  {
+    id: '25',
+    title: 'Tiramisu',
+    description: 'Classic Italian dessert with coffee-soaked ladyfingers and mascarpone.',
+    image: 'https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/tiramisu_82373_16x9.jpg',
+    cookTime: 60,
+    servings: 8,
+    difficulty: 'Hard',
+    category: 'Dessert',
+    ingredients: [
+      '24 ladyfingers',
+      '1 cup strong coffee',
+      '16 oz mascarpone cheese',
+      '4 eggs, separated',
+      '1/2 cup sugar',
+      '2 tablespoons cocoa powder',
+      '2 tablespoons rum'
+    ],
+    instructions: [
+      'Beat egg yolks with half the sugar.',
+      'Mix in mascarpone and rum.',
+      'Beat egg whites with remaining sugar.',
+      'Fold egg whites into mascarpone mixture.',
+      'Dip ladyfingers in coffee.',
+      'Layer ladyfingers and cream, dust with cocoa.'
+    ],
+    tags: ['vegetarian', 'italian', 'elegant', 'coffee', 'rich']
+  },
+  {
+    id: '26',
+    title: 'Trail Mix',
+    description: 'Homemade trail mix with nuts, dried fruits, and chocolate chips.',
+    image: 'https://beingnutritious.com/wp-content/uploads/2022/04/DIY-Trail-Mix.jpg',
+    cookTime: 10,
+    servings: 8,
+    difficulty: 'Easy',
+    category: 'Snack',
+    ingredients: [
+      '1 cup almonds',
+      '1 cup cashews',
+      '1 cup dried cranberries',
+      '1 cup raisins',
+      '1/2 cup chocolate chips',
+      '1/2 cup sunflower seeds',
+      '1/4 cup coconut flakes'
+    ],
+    instructions: [
+      'Mix all ingredients in a large bowl.',
+      'Store in an airtight container.',
+      'Can be kept for up to 2 weeks.',
+      'Perfect for hiking or snacking.',
+      'Customize with your favorite ingredients.',
+      'Great source of energy and protein.'
+    ],
+    tags: ['vegetarian', 'vegan', 'gluten-free', 'healthy', 'portable', 'energy']
+  },
+  {
+    id: '27',
+    title: 'Risotto',
+    description: 'Creamy Italian risotto with mushrooms and parmesan cheese.',
+    image: 'https://europeanmushrooms.eu/wp-content/uploads/2023/12/nl_22_lemon-risotto-with-mushroom.png',
+    cookTime: 45,
+    servings: 4,
+    difficulty: 'Hard',
+    category: 'Dinner',
+    ingredients: [
+      '1 1/2 cups arborio rice',
+      '4 cups chicken broth',
+      '1 cup mushrooms, sliced',
+      '1/2 cup white wine',
+      '1/2 cup parmesan cheese',
+      '1 onion, diced',
+      '3 tablespoons butter',
+      '2 cloves garlic'
+    ],
+    instructions: [
+      'Sauté onion and garlic in butter.',
+      'Add rice and stir until translucent.',
+      'Add wine and stir until absorbed.',
+      'Add broth gradually, stirring constantly.',
+      'Add mushrooms halfway through cooking.',
+      'Stir in parmesan cheese and serve.'
+    ],
+    tags: ['vegetarian', 'italian', 'creamy', 'comfort-food', 'elegant']
+  },
+  {
+    id: '28',
+    title: 'Smoothie Bowl',
+    description: 'Colorful smoothie bowl topped with fresh fruits and granola.',
+    image: 'https://www.modernhoney.com/wp-content/uploads/2023/06/Smoothie-Bowls-11-1-scaled.jpg',
+    cookTime: 10,
+    servings: 2,
+    difficulty: 'Easy',
+    category: 'Breakfast',
+    ingredients: [
+      '2 frozen bananas',
+      '1 cup frozen berries',
+      '1/2 cup yogurt',
+      '1/4 cup milk',
+      '1 tablespoon honey',
+      '1/4 cup granola',
+      'Fresh berries for topping',
+      '1 tablespoon chia seeds'
+    ],
+    instructions: [
+      'Blend frozen fruits with yogurt and milk.',
+      'Add honey and blend until smooth.',
+      'Pour into bowls.',
+      'Top with granola and fresh berries.',
+      'Sprinkle with chia seeds.',
+      'Serve immediately.'
+    ],
+    tags: ['vegetarian', 'gluten-free', 'healthy', 'colorful', 'instagram-worthy']
   }
 ];
 
 export const categories: Recipe['category'][] = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Snack'];
 export const difficulties: Recipe['difficulty'][] = ['Easy', 'Medium', 'Hard'];
-export const commonTags: string[] = ['vegetarian', 'vegan', 'gluten-free', 'healthy', 'quick', 'high-protein', 'family-friendly', 'classic', 'mexican', 'mediterranean', 'comfort-food', 'portable'];
+export const commonTags: string[] = ['vegetarian', 'vegan', 'gluten-free', 'healthy', 'quick', 'high-protein', 'family-friendly', 'classic', 'mexican', 'mediterranean', 'comfort-food', 'portable', 'sweet', 'creamy', 'italian', 'rich', 'elegant', 'fresh', 'simple', 'healing', 'warm', 'fluffy', 'coffee', 'energy', 'colorful', 'instagram-worthy'];

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   description: 'A modern recipe collection website featuring delicious recipes for every meal and occasion. Search, filter, and discover your next favorite dish.',
   keywords: 'recipes, cooking, food, meals, cooking instructions, ingredients',
   authors: [{ name: 'Recipe Collection Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({

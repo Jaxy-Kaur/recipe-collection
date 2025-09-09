@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types/recipe';
@@ -13,6 +13,15 @@ export default function RecipeDetailClient({ recipe }: RecipeDetailClientProps) 
   const [isFavorite, setIsFavorite] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [activeTab, setActiveTab] = useState<'ingredients' | 'instructions'>('ingredients');
+
+  // Load favorite status from localStorage on component mount
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favoriteRecipes');
+    if (savedFavorites) {
+      const favoriteIds = JSON.parse(savedFavorites);
+      setIsFavorite(favoriteIds.includes(recipe.id));
+    }
+  }, [recipe.id]);
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -77,7 +86,27 @@ export default function RecipeDetailClient({ recipe }: RecipeDetailClientProps) 
   };
 
   const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+    const newFavoriteStatus = !isFavorite;
+    setIsFavorite(newFavoriteStatus);
+    
+    // Save to localStorage
+    const savedFavorites = localStorage.getItem('favoriteRecipes');
+    let favoriteIds = savedFavorites ? JSON.parse(savedFavorites) : [];
+    
+    if (newFavoriteStatus) {
+      // Add to favorites
+      if (!favoriteIds.includes(recipe.id)) {
+        favoriteIds.push(recipe.id);
+      }
+    } else {
+      // Remove from favorites
+      favoriteIds = favoriteIds.filter((id: string) => id !== recipe.id);
+    }
+    
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteIds));
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent('favoritesUpdated'));
   };
 
   const toggleBookmark = () => {

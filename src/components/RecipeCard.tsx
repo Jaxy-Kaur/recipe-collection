@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/types/recipe';
@@ -16,16 +16,43 @@ export default function RecipeCard({ recipe, className = '' }: RecipeCardProps) 
   const [showPreview, setShowPreview] = useState(false);
   const [showAnimation, setShowAnimation] = useState(false);
 
+  // Load favorite status from localStorage on component mount
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favoriteRecipes');
+    if (savedFavorites) {
+      const favoriteIds = JSON.parse(savedFavorites);
+      setIsFavorite(favoriteIds.includes(recipe.id));
+    }
+  }, [recipe.id]);
+
   const toggleFavorite = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsFavorite(!isFavorite);
     
-    // Trigger animation when adding to favorites
-    if (!isFavorite) {
+    const newFavoriteStatus = !isFavorite;
+    setIsFavorite(newFavoriteStatus);
+    
+    // Save to localStorage
+    const savedFavorites = localStorage.getItem('favoriteRecipes');
+    let favoriteIds = savedFavorites ? JSON.parse(savedFavorites) : [];
+    
+    if (newFavoriteStatus) {
+      // Add to favorites
+      if (!favoriteIds.includes(recipe.id)) {
+        favoriteIds.push(recipe.id);
+      }
+      // Trigger animation when adding to favorites
       setShowAnimation(true);
       setTimeout(() => setShowAnimation(false), 1500);
+    } else {
+      // Remove from favorites
+      favoriteIds = favoriteIds.filter((id: string) => id !== recipe.id);
     }
+    
+    localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteIds));
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent('favoritesUpdated'));
   };
 
   const handleShare = (e: React.MouseEvent) => {
@@ -91,7 +118,7 @@ export default function RecipeCard({ recipe, className = '' }: RecipeCardProps) 
   };
 
   return (
-    <Link href={`/recipe/${recipe.id}`} className={`block group ${className}`}>
+    <div className={`block group ${className}`}>
       <article 
         className="card card-hover overflow-hidden h-full relative"
         onMouseEnter={() => setShowPreview(true)}
@@ -202,22 +229,26 @@ export default function RecipeCard({ recipe, className = '' }: RecipeCardProps) 
 
           {/* View Recipe Button */}
           <div className="pt-2">
-            <div className="flex items-center justify-center text-orange-600 font-medium group-hover:text-orange-700 transition-colors duration-300">
-              <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              View Recipe
-            </div>
+            <Link href={`/recipe/${recipe.id}`} className="block">
+              <div className="flex items-center justify-center text-orange-600 font-medium group-hover:text-orange-700 transition-colors duration-300 hover:scale-105 transform">
+                <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                View Recipe
+              </div>
+            </Link>
           </div>
         </div>
 
         {/* Hover Preview Overlay */}
-        <div 
-          className={`absolute inset-0 bg-gradient-to-br from-white via-orange-50/80 to-pink-50/80 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 overflow-visible border border-orange-100 shadow-2xl ${
-            showPreview ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-          }`}
-        >
-          <div className="h-full overflow-y-auto">
+        <Link href={`/recipe/${recipe.id}`} className="block">
+          <div 
+            className={`absolute inset-0 bg-gradient-to-br from-white via-orange-50/80 to-pink-50/80 backdrop-blur-md rounded-2xl p-6 transition-all duration-300 overflow-visible border border-orange-100 shadow-2xl z-10 cursor-pointer ${
+              showPreview ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+            style={{ display: showPreview ? 'block' : 'none' }}
+          >
+          <div className="h-full overflow-y-auto overflow-x-hidden">
             {/* Cute Header */}
             <div className="text-center mb-6">
               <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full mb-3 shadow-lg">
@@ -423,8 +454,9 @@ export default function RecipeCard({ recipe, className = '' }: RecipeCardProps) 
               </div>
             </div>
           </div>
-        </div>
+          </div>
+        </Link>
       </article>
-    </Link>
-    );
+    </div>
+  );
 }
