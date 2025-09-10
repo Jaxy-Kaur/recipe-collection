@@ -65,15 +65,27 @@ export const getTimeBasedConfig = (): TimeBasedConfig => {
 export const getTimeBasedRecipes = (recipes: Recipe[], count: number = 4): Recipe[] => {
   const config = getTimeBasedConfig();
   
-  // First, try to get recipes from priority categories
+  // Define specific recipe IDs for each time period
+  const timeBasedRecipeIds = {
+    morning: ['1', '4', '13', '19', '22', '28', '7'], // Classic Pancakes, Avocado Toast, French Toast, Oatmeal, Pancakes, Smoothie Bowl, Banana Smoothie
+    afternoon: ['6', '11', '12', '16', '21', '22', '17', '26'], // Greek Salad, Vegetable Soup, Chicken Caesar Wrap, Caesar Salad, Caprese Salad, Chicken Noodle Soup, Hummus, Trail Mix
+    evening: ['2', '5', '9', '14', '18', '20', '27'], // Chicken Stir Fry, Beef Tacos, Grilled Salmon, Spaghetti Carbonara, Beef Stew, Fish Tacos, Risotto
+    'late-night': ['3', '10', '15', '21', '25', '17', '26'] // Chocolate Chip Cookies, Berry Parfait, Chocolate Mousse, Apple Pie, Tiramisu, Hummus, Trail Mix
+  };
+  
+  // Get the specific recipe IDs for current time
+  const currentTimeRecipeIds = timeBasedRecipeIds[config.timeOfDay] || [];
+  
+  // Filter recipes by the specific IDs
   const priorityRecipes = recipes.filter(recipe => 
-    config.priorityCategories.includes(recipe.category)
+    currentTimeRecipeIds.includes(recipe.id)
   );
   
-  // If we don't have enough priority recipes, fill with other recipes
+  // If we don't have enough priority recipes, fill with other recipes from the same categories
   const remainingCount = count - priorityRecipes.length;
   const otherRecipes = recipes.filter(recipe => 
-    !config.priorityCategories.includes(recipe.category)
+    config.priorityCategories.includes(recipe.category) && 
+    !currentTimeRecipeIds.includes(recipe.id)
   );
   
   // Shuffle and take the needed amount
@@ -88,9 +100,20 @@ export const getTimeBasedRecipes = (recipes: Recipe[], count: number = 4): Recip
 export const getTimeBasedRandomRecipe = (recipes: Recipe[]): Recipe => {
   const config = getTimeBasedConfig();
   
-  // Prioritize recipes from the current time's preferred categories
+  // Define specific recipe IDs for each time period (same as featured recipes)
+  const timeBasedRecipeIds = {
+    morning: ['1', '4', '13', '19', '22', '28', '7'], // Classic Pancakes, Avocado Toast, French Toast, Oatmeal, Pancakes, Smoothie Bowl, Banana Smoothie
+    afternoon: ['6', '11', '12', '16', '21', '22', '17', '26'], // Greek Salad, Vegetable Soup, Chicken Caesar Wrap, Caesar Salad, Caprese Salad, Chicken Noodle Soup, Hummus, Trail Mix
+    evening: ['2', '5', '9', '14', '18', '20', '27'], // Chicken Stir Fry, Beef Tacos, Grilled Salmon, Spaghetti Carbonara, Beef Stew, Fish Tacos, Risotto
+    'late-night': ['3', '10', '15', '21', '25', '17', '26'] // Chocolate Chip Cookies, Berry Parfait, Chocolate Mousse, Apple Pie, Tiramisu, Hummus, Trail Mix
+  };
+  
+  // Get the specific recipe IDs for current time
+  const currentTimeRecipeIds = timeBasedRecipeIds[config.timeOfDay] || [];
+  
+  // Filter recipes by the specific IDs
   const priorityRecipes = recipes.filter(recipe => 
-    config.priorityCategories.includes(recipe.category)
+    currentTimeRecipeIds.includes(recipe.id)
   );
   
   // If we have priority recipes, choose from them, otherwise choose any recipe
