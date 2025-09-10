@@ -1,21 +1,14 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import SearchBar from '@/components/SearchBar';
-import FilterButtons from '@/components/FilterButtons';
-import TagFilter from '@/components/TagFilter';
-import RecipeGrid from '@/components/RecipeGrid';
 import RecipeCard from '@/components/RecipeCard';
-import { recipes, categories, difficulties, commonTags } from '@/data/recipes';
+import { recipes } from '@/data/recipes';
 import { Recipe } from '@/types/recipe';
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('All');
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [randomRecipe, setRandomRecipe] = useState<Recipe | null>(null);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
 
@@ -29,40 +22,6 @@ export default function HomePage() {
     "Your Personal Recipe Treasure Trove"
   ];
 
-  // Filter recipes based on search and filters
-  const filteredRecipes = useMemo(() => {
-    return recipes.filter((recipe) => {
-      // Search filter
-      const searchMatch = searchQuery === '' || 
-        recipe.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        recipe.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        recipe.ingredients.some(ingredient => 
-          ingredient.toLowerCase().includes(searchQuery.toLowerCase())
-        ) ||
-        recipe.tags.some(tag => 
-          tag.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-
-      // Category filter
-      const categoryMatch = selectedCategory === 'All' || recipe.category === selectedCategory;
-
-      // Difficulty filter
-      const difficultyMatch = selectedDifficulty === 'All' || recipe.difficulty === selectedDifficulty;
-
-      // Tags filter
-      const tagsMatch = selectedTags.length === 0 || 
-        selectedTags.some(tag => recipe.tags.includes(tag));
-
-      return searchMatch && categoryMatch && difficultyMatch && tagsMatch;
-    });
-  }, [searchQuery, selectedCategory, selectedDifficulty, selectedTags]);
-
-  const clearAllFilters = () => {
-    setSearchQuery('');
-    setSelectedCategory('All');
-    setSelectedDifficulty('All');
-    setSelectedTags([]);
-  };
 
   // Set random recipe on client side only
   useEffect(() => {
@@ -130,15 +89,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Hero Search Bar */}
-          <div className="max-w-2xl mx-auto mb-12">
-            <SearchBar
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="What would you like to cook today?"
-              className="w-full"
-            />
-          </div>
 
           {/* Hero Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
@@ -196,14 +146,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="text-center">
-            <button className="btn-primary">
-              View All Recipes
-              <svg className="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </button>
-          </div>
         </div>
       </section>
 
@@ -248,12 +190,15 @@ export default function HomePage() {
                       <span>4.5</span>
                     </div>
                   </div>
-                  <button className="btn-primary">
+                  <Link
+                    href={`/recipe/${randomRecipe.id}`}
+                    className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
                     Cook This Recipe
                     <svg className="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </button>
+                  </Link>
                 </>
               ) : (
                 <div className="space-y-4">
@@ -266,92 +211,22 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Main Content Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar with Filters */}
-            <div className="lg:col-span-1 space-y-6">
-              <div className="sticky top-24">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Filters & Search</h3>
-                
-                {/* Search Bar */}
-                <div className="mb-6">
-                  <SearchBar
-                    value={searchQuery}
-                    onChange={setSearchQuery}
-                    placeholder="Search recipes..."
-                  />
-                </div>
-
-                {/* Filter Buttons */}
-                <div className="mb-6">
-                  <FilterButtons
-                    categories={['All', ...categories]}
-                    difficulties={['All', ...difficulties]}
-                    selectedCategory={selectedCategory}
-                    selectedDifficulty={selectedDifficulty}
-                    onCategoryChange={setSelectedCategory}
-                    onDifficultyChange={setSelectedDifficulty}
-                    onClearFilters={clearAllFilters}
-                  />
-                </div>
-
-                {/* Tag Filter */}
-                <div className="mb-6">
-                  <TagFilter
-                    tags={commonTags}
-                    selectedTags={selectedTags}
-                    onTagChange={setSelectedTags}
-                  />
-                </div>
-
-                {/* Active Filters Summary */}
-                {(selectedCategory !== 'All' || selectedDifficulty !== 'All' || selectedTags.length > 0) && (
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                    <h4 className="font-medium text-orange-800 mb-2">Active Filters:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedCategory !== 'All' && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800 border border-orange-200">
-                          {selectedCategory}
-                          <button
-                            onClick={() => setSelectedCategory('All')}
-                            className="ml-2 hover:text-orange-600 transition-colors duration-200"
-                          >
-                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          </button>
-                        </span>
-                      )}
-                      {selectedDifficulty !== 'All' && (
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-emerald-100 text-emerald-800 border border-emerald-200">
-                          {selectedDifficulty}
-                          <button
-                            onClick={() => setSelectedDifficulty('All')}
-                            className="ml-2 hover:text-emerald-600 transition-colors duration-200"
-                          >
-                            <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                          </button>
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Main Content */}
-            <div className="lg:col-span-3">
-              <RecipeGrid
-                recipes={filteredRecipes}
-                searchQuery={searchQuery}
-                className="min-h-[600px]"
-              />
-            </div>
-          </div>
+      {/* Call to Action Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-500 to-red-500">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">Ready to Explore More?</h2>
+          <p className="text-xl text-orange-100 mb-8">
+            Discover our complete collection of {recipes.length} delicious recipes with advanced filtering options.
+          </p>
+          <Link
+            href="/recipes"
+            className="inline-flex items-center px-8 py-4 bg-white text-orange-600 font-bold rounded-full hover:bg-orange-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
+            View All Recipes
+            <svg className="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
         </div>
       </section>
 
