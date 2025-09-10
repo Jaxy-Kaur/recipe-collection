@@ -7,6 +7,13 @@ import Footer from '@/components/Footer';
 import RecipeCard from '@/components/RecipeCard';
 import { recipes } from '@/data/recipes';
 import { Recipe } from '@/types/recipe';
+import { 
+  getTimeBasedRecipes, 
+  getTimeBasedRandomRecipe, 
+  getTimeBasedGreeting, 
+  getTimeBasedSubtitle, 
+  getTimeBasedFeaturedTitle 
+} from '@/utils/timeBasedSuggestions';
 
 export default function HomePage() {
   const [randomRecipe, setRandomRecipe] = useState<Recipe | null>(null);
@@ -23,11 +30,10 @@ export default function HomePage() {
   ];
 
 
-  // Set random recipe on client side only
+  // Set time-based random recipe on client side only
   useEffect(() => {
     const getRandomRecipe = (): Recipe => {
-      const randomIndex = Math.floor(Math.random() * recipes.length);
-      return recipes[randomIndex];
+      return getTimeBasedRandomRecipe(recipes);
     };
     setRandomRecipe(getRandomRecipe());
   }, []);
@@ -43,7 +49,7 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [mainRotationOptions.length]);
 
-  const featuredRecipes = recipes.slice(0, 4);
+  const featuredRecipes = getTimeBasedRecipes(recipes, 4);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -58,7 +64,7 @@ export default function HomePage() {
               <svg className="h-5 w-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>
-              <span className="text-sm font-medium text-gray-700">Discover Amazing Recipes</span>
+              <span className="text-sm font-medium text-gray-700">{getTimeBasedGreeting()}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Your Culinary
@@ -70,8 +76,7 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-6 leading-relaxed">
-              Explore our curated collection of delicious recipes from around the world. 
-              From quick breakfasts to elaborate dinners, find your next favorite dish.
+              {getTimeBasedSubtitle()}
             </p>
             
             {/* Main Options Progress Indicators */}
@@ -127,9 +132,9 @@ export default function HomePage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Featured Recipes</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">{getTimeBasedFeaturedTitle()}</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Handpicked recipes that are perfect for any occasion. 
+              Handpicked recipes that are perfect for this time of day. 
               These crowd-pleasers are sure to become family favorites.
             </p>
           </div>

@@ -172,6 +172,73 @@ export default function RecipeCard({ recipe, className = '' }: RecipeCardProps) 
               {recipe.category}
             </span>
           </div>
+
+          {/* Interactive Icons - Heart and Share */}
+          <div className="absolute bottom-3 right-3 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
+            {/* Heart Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleFavorite(e);
+              }}
+              className={`relative p-2 rounded-full transition-all duration-300 shadow-lg hover:scale-110 ${
+                isFavorite 
+                  ? 'bg-red-500 text-white' 
+                  : 'bg-white/90 text-gray-600 hover:bg-red-500 hover:text-white'
+              }`}
+            >
+              <svg className={`h-4 w-4 ${isFavorite ? 'fill-current' : ''} ${showAnimation ? 'heart-beat' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              
+              {/* Firework Explosion Animation */}
+              {showAnimation && (
+                <div className="absolute inset-0 pointer-events-none overflow-visible">
+                  {/* Stars exploding in all directions */}
+                  {[...Array(8)].map((_, i) => {
+                    const angle = (i * 45) * (Math.PI / 180);
+                    const distance = 30 + (i % 2) * 10;
+                    const x = Math.cos(angle) * distance;
+                    const y = Math.sin(angle) * distance;
+                    
+                    return (
+                      <div
+                        key={`star-${i}`}
+                        className="absolute text-yellow-400 firework-explosion"
+                        style={{
+                          '--explosion-x': `${x}px`,
+                          '--explosion-y': `${y}px`,
+                          animationDelay: `${i * 0.05}s`,
+                          left: '50%',
+                          top: '50%',
+                          fontSize: '14px',
+                          transform: 'translate(-50%, -50%)',
+                          zIndex: 30,
+                        } as React.CSSProperties}
+                      >
+                        ⭐
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </button>
+
+            {/* Share Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleShare(e);
+              }}
+              className="p-2 rounded-full bg-white/90 text-gray-600 hover:bg-blue-500 hover:text-white transition-all duration-300 shadow-lg hover:scale-110"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Recipe Content */}
